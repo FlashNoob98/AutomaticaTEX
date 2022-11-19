@@ -66,3 +66,37 @@ $$
     T(s) = \frac{Y(s)}{R(s)} = \frac{G(s)\cdot K(s)}{1 + G(s)\cdot K(s)} =\frac{F(s)}{1+F(s)}
 $$
 
+Al fine di studiare le caratteristiche di un sistema controllato bisogna prima accertarsi che questo sia stabile a ciclo chiuso, ciò può essere verificato tracciando il diagramma di Nyquist della funzione di trasferimento del sistema $G(s)$, tale diagramma mostra la funzione di trasferimento sul piano complesso di Gauss.
+Si mostra di seguito un esempio di rappresentazione sui diagrammi di Bode e Nyquist di una funzione di trasferimento:
+$$
+    a
+$$
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[
+            scale=25/10
+        ]
+        \begin{scope}
+            \tikzset{
+                Nyquist grid/.style={black},
+                Nyquist label axis/.style={very thick,blue}
+            }
+            \NyquistGraph[smooth,samples=2000]{-3:2}
+            {\SOAmp{0.1}{0.3}{1}-\POAmp{1}{9.999}}
+            {\SOArg{0.1}{0.3}{1}-\POArg{1}{9.999}}
+
+
+            \NyquistPoint*[]{1/left,10/left}
+            {\SOAmp{0.1}{0.3}{1}-\POAmp{1}{9.999}}
+            {\SOArg{0.1}{0.3}{1}-\POArg{1}{9.999}}
+
+            \def\valgridNx{0.2}
+            \def\valgridNy{0.2}
+            \NyquistGrid
+
+        \end{scope}
+
+    \end{tikzpicture}
+    %\caption{$\textcolor{blue}{\zeta=\ZETA},\ \textcolor{red}{\zeta=\ZETAA}$}
+\end{figure}

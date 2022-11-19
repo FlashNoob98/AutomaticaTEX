@@ -286,4 +286,6 @@ varInfo.mat
 *.pdf
 *.aux
 
-
+# Gnuplot #Hold those file if you don't want to recompile with gnuplot
+# *.table 
+# *.gnuplot

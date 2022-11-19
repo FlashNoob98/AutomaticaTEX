@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt,oneside,draft]{article}
+\documentclass[a4paper,10pt,oneside]{article}
 
 \usepackage{ucs}
 \usepackage[utf8]{inputenc}
@@ -12,9 +12,19 @@
 \usepackage{float}
 
 \usepackage[]{hyperref}
+\usepackage{pgfplots} % Plot dei grafici
+\usepackage{bodegraph} %pacchetto per diagrammi di Bode
+\tikzset{gnuplot def/.append style={prefix={PDF/PDF/}},prefix={PDF/}}
 
-\usepackage{tikz}
+\pgfplotsset{compat=1.18}
+% Riduzione tempi di compilazione esternalizzando le figure in pdf separati
+\usepgfplotslibrary{external}
+%\usetikzlibrary{pgfplots.external}
+\tikzexternalize[prefix=PDF/, optimize command away=\includepdf]
+%\tikzset[gnuplot def/.append style={prefix={}}]
 \usetikzlibrary{shapes,arrows}
+
+\usetikzlibrary{patterns} % libreria per disegnare i pattern
 
 
 \author{Daniele Olivieri}
