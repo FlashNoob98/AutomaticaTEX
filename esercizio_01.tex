@@ -1,31 +1,68 @@
 
 \section{Specifiche a regime}
 
+\begin{figure}[h]
+    \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+        % We start by placing the blocks
+        \node [input, name=input] at (0,0) {};
+        \node [sum] (sum) at (1,0) {};
+        \node [block] (controller) at (3.5,0) {$K(s)$};
+        \node [block] (system) at (6.5,0) {$G(s)$};
+        % We draw an edge between the controller and system block to
+        % calculate the coordinate u. We need it to place the measurement block.
+        \draw [->] (controller) -- node[name=u] {$U(s)$} (system);
+        \node [sum, ] (disturbance) at (8.5,0) {};
+        %\node [input, above of=disturbance] (g_d) {$G_d(s)$};
+        \node [input] (dist_input) at (8.5,1) {$D(s)$};
+        \node [output] (out2) at (9,0) {};
+        \node [sum, ] (noise) at (9,-1.5) {};
+        \node [output, right of=disturbance] (output) {};
+        \node [input] (noise_in) at (10,-1.5) {};
+        %\node [block, below of=u] (measurements) {$GAAA(s)$};
 
-\begin{tikzpicture}[auto, node distance=2cm,>=latex']
-    % We start by placing the blocks
-    \node [input, name=input] {};
-    \node [sum, right of=input] (sum) {};
-    \node [block, right of=sum] (controller) {$K(s)$};
-    \node [block, right of=controller,
-            node distance=3cm] (system) {$G(s)$};
-    % We draw an edge between the controller and system block to
-    % calculate the coordinate u. We need it to place the measurement block.
-    \draw [->] (controller) -- node[name=u] {$U$} (system);
-    \node [sum, right of=system, node distance=2cm] (disturbance) {};
-    %\node [block, above of=disturbance] (g_d) {$G_d(s)$};
-    \node [input, above of=disturbance] (dist_input){$D$};
-    \node [output, right of=disturbance] (output) {};
-    \node [block, below of=u] (measurements) {$G_m(s)$};
 
-    % Once the nodes are placed, connecting them is easy.
-    \draw [draw,->] (input) -- node {$R(s)$} (sum);
-    \draw [->] (sum) -- node {$E(s)$} (controller);
-    \draw [->] (system) -- node {$Y_u$} (disturbance);
-    \draw [->] (disturbance) -- node [name=y] {$Y$}(output);
-    %\draw [->] (g_d) -- node {$Y_d$} (disturbance);
-%    \draw [draw, ->] (dist_input) -- node {$D$} (g_d);
-    %\draw [->] (y) |- (measurements);
-    \draw [->] (measurements) -| node[pos=0.99] {$-$}
-        node [near end] {$Y_m$} (sum);
-\end{tikzpicture}
+        % Once the nodes are placed, connecting them is easy.
+        \draw [->] (input) -- node {$R(s)$} (sum);
+        \draw (input) -- node[pos=0.9,yshift=-13] {$+$}(sum);
+        \draw [->] (sum) -- node {$E(s)$} (controller);
+        \draw [->] (system) -- node[pos=0.9,yshift=-13] {$+$} (disturbance);
+        \draw [->] (disturbance) -- node [name=y,xshift=14] {$Y(s)$}(output);
+
+        %\draw [->] (g_d) -- node {$Y_d$} (disturbance);
+        \draw [draw, ->] (dist_input) node[xshift=-13,yshift=-5]{$D(s)$} -- node[pos=0.8,xshift=-13] {$+$} (disturbance);
+        %\draw [->] (y) |- (measurements);
+        \draw [->] (out2) -- node[pos=0.9,xshift=-13] {$+$} node{}(noise);
+        %\draw [->] (noise_in) -- node{$N(s)$}(noise);
+        \draw [->] (noise) -| node[pos=0.95,xshift=13] {$-$}  node [near end] {} (sum);
+        \draw [->] (noise_in) -- node[pos=1] {$+$}  node [label={$N(s)$}] {} (noise);
+    \end{tikzpicture}
+    \caption[]{Sistema generico}
+    \label{fig:sistema_generico}
+\end{figure}
+
+In figura \ref{fig:sistema_generico} è possibile visualizzare lo schema elementare di un sistema generico con controllore in retroazione, si indicano in tabella \ref{tab:elementi_sistema} i riferimenti ai vari componenti del sistema, tutte le funzioni si assumono presentate nel dominio di Laplace.
+\begin{table}[h]\centering
+    \begin{tabular}{c | l}
+        $R(s)$ & Segnale di riferimento                    \\ \hline
+        $E(s)$ & Funzione di errore                        \\ \hline
+        $K(s)$ & Funzione di trasferimento del controllore \\ \hline
+        $U(s)$ & Ingresso al sistema                       \\ \hline
+        $G(s)$ & Funzione di trasferimento del sistema     \\ \hline
+        $D(s)$ & Disturbo in uscita                        \\ \hline
+        $N(s)$ & Rumore nel sistema di feedback            \\ \hline
+        $Y(s)$ & Uscita del sistema
+    \end{tabular}
+    \caption{Elementi del sistema}
+    \label{tab:elementi_sistema}
+\end{table}
+
+Si definisce inoltre la funzione di trasferimento ad anello aperto, assumendo che non ci sia il sistema di retroazione e che non ci sia alcun disturbo in uscita (dunque $E(s) = R(s)$) la seguente:
+$$
+    F(s) = \frac{Y(s)}{R(s)} = K(s)\cdot G(s)
+$$
+
+Trascurando ancora il disturbo in uscita ed il rumore nella catena di retroazione si definisce la funzione di \textit{funzione di sensitività complementare $T(s)$} il rapporto tra l'uscita del sistema e il riferimento, includendo però la catena di retroazione:
+$$
+    T(s) = \frac{Y(s)}{R(s)} = \frac{G(s)\cdot K(s)}{1 + G(s)\cdot K(s)} =\frac{F(s)}{1+F(s)}
+$$
+
