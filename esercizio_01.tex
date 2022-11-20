@@ -67,10 +67,44 @@ $$
 $$
 
 Al fine di studiare le caratteristiche di un sistema controllato bisogna prima accertarsi che questo sia stabile a ciclo chiuso, ciò può essere verificato tracciando il diagramma di Nyquist della funzione di trasferimento del sistema $G(s)$, tale diagramma mostra la funzione di trasferimento sul piano complesso di Gauss.
+
+\newpage
 Si mostra di seguito un esempio di rappresentazione sui diagrammi di Bode e Nyquist di una funzione di trasferimento:
-$$
-    a
-$$
+\begin{equation}
+    F(s) = \frac{5}{s(s+1)}
+    \label{eq:trasferimento_es_1}
+\end{equation}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[]
+        \begin{scope}[xscale=7/2,yscale=3/80]
+            \tikzset{
+                semilog lines/.style={black},
+            }
+            \UnitedB
+            \semilog{-1}{1}{-40}{40}
+            \BodeGraph[asymp lines,samples=400]
+            {-1:1}{\IntAmp{5}+\POAmpAsymp{1}{1}
+            }
+            \BodeGraph[samples=400]{-1:1}{\IntAmp{5}+\POAmp{1}{1}}
+        \end{scope}
+        \begin{scope}[xscale=7/2,yscale=3/90]
+            \tikzset{
+                semilog lines/.style={black},
+            }
+            \UniteDegre
+            \OrdBode{15}
+            \semilog{-1}{1}{-180}{-90}
+            \BodeGraph[asymp lines,samples=400]
+            {-1:1}{\IntArg{5}+\POArgAsymp{1}{1}
+            }
+            \BodeGraph[samples=400]{-1:1}{\IntArg{5}+\POArg{1}{1}}
+        \end{scope}
+    \end{tikzpicture}
+    \caption{Diagrammi di Bode della funzione di trasferimento \ref{eq:trasferimento_es_1}}
+    \label{fig.amplitude_origin_pole}
+\end{figure}
 
 \begin{figure}[h]
     \centering
@@ -82,14 +116,14 @@ $$
                 Nyquist grid/.style={black},
                 Nyquist label axis/.style={very thick,blue}
             }
-            \NyquistGraph[smooth,samples=2000]{-3:2}
-            {\SOAmp{0.1}{0.3}{1}-\POAmp{1}{9.999}}
-            {\SOArg{0.1}{0.3}{1}-\POArg{1}{9.999}}
 
+            \NyquistGraph[smooth,samples=200]{0.1:2}
+            {\IntAmp{5}+\POAmpAsymp{1}{1}}
+            {\IntArg{5}+\POArg{1}{1}}
 
-            \NyquistPoint*[]{1/left,10/left}
-            {\SOAmp{0.1}{0.3}{1}-\POAmp{1}{9.999}}
-            {\SOArg{0.1}{0.3}{1}-\POArg{1}{9.999}}
+            \NyquistPoint*[]{1.5/left,2/left}
+            {\IntAmp{5}+\POAmpAsymp{1}{1}}
+            {\IntArg{5}+\POArg{1}{1}}
 
             \def\valgridNx{0.2}
             \def\valgridNy{0.2}
@@ -98,5 +132,5 @@ $$
         \end{scope}
 
     \end{tikzpicture}
-    %\caption{$\textcolor{blue}{\zeta=\ZETA},\ \textcolor{red}{\zeta=\ZETAA}$}
+    \caption{Diagramma di Nyquist della funzione \ref{eq:trasferimento_es_1}}
 \end{figure}
