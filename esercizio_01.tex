@@ -1,7 +1,7 @@
 
 \section{Specifiche a regime}
 
-\begin{figure}[h]
+\begin{figure}[h]\centering
     \begin{tikzpicture}[auto, node distance=2cm,>=latex']
         % We start by placing the blocks
         \node [input, name=input] at (0,0) {};
@@ -68,6 +68,7 @@ $$
 
 Al fine di studiare le caratteristiche di un sistema controllato bisogna prima accertarsi che questo sia stabile a ciclo chiuso, ciò può essere verificato tracciando il diagramma di Nyquist della funzione di trasferimento del sistema $G(s)$, tale diagramma mostra la funzione di trasferimento sul piano complesso di Gauss.
 
+%Questo forse è l'ultimo esercizio con i parametri in transitorio
 \newpage
 Si mostra di seguito un esempio di rappresentazione sui diagrammi di Bode e Nyquist di una funzione di trasferimento:
 \begin{equation}
@@ -106,10 +107,11 @@ Si mostra di seguito un esempio di rappresentazione sui diagrammi di Bode e Nyqu
     \label{fig.amplitude_origin_pole}
 \end{figure}
 
+A partire dai diagrammi di Bode è possibile dunque riportare la funzione sul diagramma di Nyquist, la curva deve poi essere parametrizzata in funzione di $\omega$, come si può notare nel grafico sottostante sono stati riportati due punti specifici $\omega = 1.5,\ \omega = 2$.
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}[
-            scale=25/10
+            scale=2
         ]
         \begin{scope}
             \tikzset{
@@ -134,3 +136,14 @@ Si mostra di seguito un esempio di rappresentazione sui diagrammi di Bode e Nyqu
     \end{tikzpicture}
     \caption{Diagramma di Nyquist della funzione \ref{eq:trasferimento_es_1}}
 \end{figure}
+
+Si richiede in questo esercizio di verificare che la funzione rispetti i requisiti del sistema al transitorio, in particolare si vuole studiare la risposta
+al gradino del sistema a ciclo chiuso, per fare ciò si approssima il sistema ad
+uno più semplice, si vedrà come determinare se del primo o del secondo ordine.
+
+Per prima cosa si determina la pulsazione critica del sisema, ovvero quella
+pulsazione per la quale il modulo della funzione $F(s)$ sia pari ad 1, ovvero pari a 0 nel diagramma di Bode ($\log(1)=0$), osservando il diagramma si vede che
+$\omega_c \simeq \SI{2}{\radian/\second}$, è quindi ora necessario determinare il margine di
+fase per
+
+

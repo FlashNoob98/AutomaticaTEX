@@ -1,2 +1,2 @@
 set table "PDF/PDF/3.table"; set format "%.5f"
-set samples 400.0; set parametric; plot [t=-1:1] [] [] log10(10**t),-90+(t<log10(1/(1))? 0:-90) 
+set samples 2.0; set parametric; plot [t=0.17607:0.17607] [] [] 10**((20*log10(abs(5/(10**t)))+(t<log10(1/(1))?20*log10(1):+20*log10(1/(1))-20*log10(10**t)))/20)*cos(3.1415957/180*(-90+-180/3.1415957*atan(1*10**t))),10**((20*log10(abs(5/(10**t)))+(t<log10(1/(1))?20*log10(1):+20*log10(1/(1))-20*log10(10**t)))/20)*sin(3.1415957/180*(-90+-180/3.1415957*atan(1*10**t)))
