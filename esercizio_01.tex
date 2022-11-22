@@ -144,6 +144,24 @@ uno più semplice, si vedrà come determinare se del primo o del secondo ordine.
 Per prima cosa si determina la pulsazione critica del sisema, ovvero quella
 pulsazione per la quale il modulo della funzione $F(s)$ sia pari ad 1, ovvero pari a 0 nel diagramma di Bode ($\log(1)=0$), osservando il diagramma si vede che
 $\omega_c \simeq \SI{2}{\radian/\second}$, è quindi ora necessario determinare il margine di
-fase per
+fase per discernere se il sistema a ciclo chiuso approssimato
+è del primo o del secondo ordine, in questo caso il margine di fase è circa
+$35^\circ$, dunque la funzione di trasferimento $T_a(s)$ approssimata sarà
+del secondo ordine con uno smorzamento di circa $\zeta = 0.35$
 
-
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[]
+        \begin{scope}[xscale=7/2,yscale=3/80]
+            \tikzset{
+                semilog lines/.style={black},
+            }
+            \UnitedB
+            \semilog{-1}{1}{-40}{40}
+            \BodeGraph[asymp lines,samples=400]
+            {-1:1}{\SOAmpAsymp{1}{0.35}{2}}
+            \BodeGraph[samples=400]{-1:1}{\SOAmp{1}{0.35}{2}}
+            \BodeGraph[color=red]{-1:1}{20*log10(sqrt(25*t**2+(5-5t**2)**2)/((7*t-2*t**3)**2 + (t**4-8*t**2+6)**2))}
+        \end{scope}
+    \end{tikzpicture}
+\end{figure}
