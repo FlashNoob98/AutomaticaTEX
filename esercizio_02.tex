@@ -1,0 +1,47 @@
+\section{Progettazione di un controllore}
+
+Sia dato un sistema come quello in figura \ref{fig:sistema_generico}, la
+cui funzione di trasferimento è:
+$$
+    G(s) = \frac{30}{(s+10)(s+3)} = \frac{1}{\left(\frac{s}{10}+1\right)\left(\frac{s}{3}+1\right)}
+$$
+si vuole
+progettare un controllore $K(s)$ in modo tale che il sistema a ciclo chiuso
+rispetti le seguenti specifiche:
+\begin{itemize}
+    \item $e(t)|_{\infty} = 0 \ |\ r(t) = 1(t) $ errore a regime nullo con ingresso a gradino $\rightarrow K_1(s) = \frac{1}{s}$
+    \item Attenuazione $ATT \geq 95\%\ \omega \in [100\ +\infty[\ \rightarrow |F(j\omega_d)| \geq \SI{-26}{\deci\bel}$
+    \item Sovraelongazione $s\leq 20\%$
+    \item Tempo di assestamento $t_{s,1\%} \leq 0.5 s$
+\end{itemize}
+
+Il primo procedimento è quello di tradurre le specifiche nei diagrammi di Bode,
+innanzitutto per annullare l'errore con ingresso a graino è necessario avere
+un polo nell'origine, dopo essersi assicurati che questo non sia già presente nel sistema è possibile aggiungere il primo elemento del controllore parziale $K'(s) = \frac{1}{s}$.
+
+Garantire un'attenuazione del 95\% significa avere un sistema che abbia modulo pari a $1-0.95$ con ingresso unitario, superata la pulsazione critica si assume che la funzione $F(s)$ e la funzione $T(s)$ abbiano lo stesso andamento, dunque
+è sufficiente inserire nel piano di Bode dei moduli un'area di non attraversammento della $F(s)$ per pulsazioni maggiori di \SI{100}{\radian/\second} e moduli maggiori di $20\log_{10}(1-0.95) = \SI{-26}{\deci{\bel}}$.
+
+La sovraelongazione $s$ ci dà informazioni riguardo la tipologia di funzione approssimante se del primo o secondo ordine e il margine di fase da rispettare,
+dalla teoria si sa che dato un valore massimo di sovraelongazione (ad esempio 20\%)
+$$
+    s = e^{\frac{-\pi \zeta}{\sqrt{1-\zeta^2}}} \leq 20\% \Rightarrow \zeta \geq \sqrt{\frac{\ln s^2}{\pi^2 + \ln s^2}}
+$$
+in questo caso $\zeta \geq 0.456$, con buona approssimazione si stima il margine
+di fase desiderato pari a $100/\zeta = 45.6^\circ$, di conseguenza essendo tale margine minore di \SI{60}{\degree} si approssima il sistema a ciclo chiuso ad uno del secondo ordine del tipo
+$$
+    T_a(s) =  \frac{1}{1+\frac{2\zeta}{\omega_n}s + \frac{s^2}{\omega_n^2}}
+$$
+la curva inviluppo della risposta ha un andamento del tipo
+$$
+    e^{-\zeta \omega_n t_s}
+$$
+con $\omega_n$ la pulsazione naturale e $t_s$ il tempo di assestamento, se si considera ad esempio un assestamento all'1\% in un tempo di \SI{0.5}{\second} come in questo caso si ricava la pulsazione naturale
+$$
+    e^{-\zeta \omega_n t_s} \leq 1\% \Rightarrow -\zeta\omega_n t_s \leq \ln{1\%} = -4.6 \Rightarrow \omega_n \geq \frac{4.6}{\zeta t_s} \geq \frac{4.6}{0.456\cdot 0.5} \geq \SI{20}{\radian/\second}
+$$
+
+Ricavate tutte le specifiche è possibile iniziare la progettazione del controllore.
+
+
+
