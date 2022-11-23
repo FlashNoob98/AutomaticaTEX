@@ -43,5 +43,41 @@ $$
 
 Ricavate tutte le specifiche è possibile iniziare la progettazione del controllore.
 
+Si riporta sui diagrammi di Bode la funzione di trasferimento del sistema con
+il polo aggiunto nell'origine, rispettando la prima specifica.
+$$
+    F'(s) = \frac{1}{s}\frac{1}{\left(\frac{s}{10}+1\right)\left(\frac{s}{3}+1\right)}
+$$
 
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[]
+        \begin{scope}[xscale=7/2,yscale=3/110]
+            \tikzset{
+                semilog lines/.style={black},
+            }
+            \UnitedB
+            \OrdBode{30}
+            \semilog{-1}{2}{-90}{30}
+            \BodeGraph[asymp lines,samples=400]
+            {-1:2}{\IntAmp{1}+\POAmpAsymp{1}{0.1}+\POAmpAsymp{1}{0.333}
+            }
+            \BodeGraph[samples=400]{-1:2}{\IntAmp{1}+\POAmp{1}{0.1}+\POAmp{1}{0.333}}
+        \end{scope}
+        \begin{scope}[xscale=7/2,yscale=3/90]
+            \tikzset{
+                semilog lines/.style={black},
+            }
+            \UniteDegre
+            \OrdBode{15}
+            \semilog{-1}{2}{-270}{-90}
+            \BodeGraph[asymp lines,samples=400]
+            {-1:2}{\IntArg{1}+\POArg{1}{0.1}+\POArg{1}{0.333}
+            }
+            \BodeGraph[samples=400]{-1:2}{\IntArg{5}+\POArgAsymp{1}{0.1}+\POArgAsymp{1}{0.333}}
+        \end{scope}
+    \end{tikzpicture}
+    \caption{Diagrammi di Bode della funzione di trasferimento con polo}
+    \label{fig:bode_es_2}
+\end{figure}
 
