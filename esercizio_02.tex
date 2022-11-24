@@ -81,3 +81,65 @@ $$
     \label{fig:bode_es_2}
 \end{figure}
 
+Analizzando i diagrammi di Bode si nota come il sistema non rispetti il punto
+di attraversamento a \SI{20}{\radian\per\second} nè abbia un margine di fase
+di $45.6^\circ$ a tale pulsazione, si vede come in questo caso la specifica sulla fase (ovvero sulla sovraelongazione) sia molto più critica rispetto a quella sulla pulsazione naturale (ovvero il tempo di assestamento) dunque si decide di procedere prima al recupero della fase.
+Tracciando i diagrammi asintotici per le fasi si può osservare come questa sia pari a circa $-235^\circ$ in $\omega=\SI{20}{\radian/\second}$ mentre ne sono richiesti $45.6^\circ$ di margine dunque rispetto alla fase $-180^\circ$, il recupero necessario è facilmente ricavabile con la seguente:
+$$
+    \Delta\varphi(\omega_d) = 180 + \angle{\varphi'(\omega_d)} - \varphi_{md}
+$$
+in questo caso (approssimando 45.6 a 45) $\angle{\varphi'(\omega_d)} = -235$ e $\varphi_{md} = 45$ si ottiene $\Delta\varphi(\omega_d) = -100$, vanno recuperati 100 gradi.
+
+Esistono diverse soluzioni al problema, bisogna capire inizialmente la struttura del controllore per poi determinare i punti in cui posizionare poli e zeri, si sa che ogni zero anticipa la fase di 90 gradi, dunque ne saranno necessari almeno due per un guadagno di 100, uno zero andrà sicuramente inserito prima della pulsazione critica, il secondo potrebbe essere inserito prima o dopo, prima di procedere al posizionamento degli zeri però si nota che così facendo si avrebbe una pendenza residua sul diagramma dei moduli pari al massimo a -1, ovvero se si impone il passaggio in zero a \SI{20}{\radian/\second} con una pendenza massima di -1 si arriverebbe alla pulsazione di \SI{100}{\radian/\per\second} con un modulo pari a \SI{-20}{\deci\bel}, dalle specifiche di attenuazione del rumore però sono richiesti almeno \SI{-26}{\deci\bel}, dunque la pendenza di attraversamento del punto critico deve essere maggiore, è allora necessario inserire almeno un polo nel controllore.
+
+Si ipotizza di inserire uno zero centrato in 1, lontano almeno una decade dal punto critico che permetta di recuperare i primi 90 gradi, restano da recuperare
+ulteriori 10 gradi con il rimanente zero e il polo, se si posizionano ad un terzo di decade di distanza questi daranno un incremento di circa 15 gradi in un intervallo di una decade e mezzo, si può facilmente vedere con i diagrammi asintotici delle fasi.
+Si sceglie dunque di posizionare il secondo zero in $\omega=5$ e il polo in $\omega = 10$, la funzione di trasferimento della seconda parte di controllore sarà:
+$$
+    K''(s) = \frac{(s+1)(s/5+1)}{s/10+1}
+$$
+\newpage
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[]
+        \begin{scope}[xscale=7/2,yscale=3/60]
+            \tikzset{
+                semilog lines/.style={black},
+            }
+            \UnitedB
+            \OrdBode{10}
+            \semilog{-1}{2}{-10}{50}
+            \BodeGraph[asymp lines,samples=400]
+            {-1:2}{\POAmpAsymp{1}{0.1}-\POAmpAsymp{1}{1}-\POAmpAsymp{1}{0.2}
+            }
+            \BodeGraph[samples=400]{-1:2}{\POAmp{1}{0.1}-\POAmp{1}{1}-\POAmp{1}{0.2}
+            }
+        \end{scope}
+        \begin{scope}[yshift=-4cm,xscale=7/2,yscale=3/120]
+            \tikzset{
+                semilog lines/.style={black},
+            }
+            \UniteDegre
+            \OrdBode{20}
+            \semilog{-1}{2}{-10}{110}
+            \BodeGraph[samples=400]
+            {-1:2}{\POArg{1}{0.1}-\POArg{1}{1}-\POArg{1}{0.2}
+            }
+        \end{scope}
+    \end{tikzpicture}
+    \caption{Diagrammi del controllore $K''(s)$}
+    \label{fig:bode_K2_es_2}
+\end{figure}
+
+Anche senza rappresentare i diagrammi di Bode si nota che l'aggiunta di poli e
+zeri implica anche una variazione del modulo, si hanno \SI{+26}{\deci\bel}
+dovuti dallo zero in 1 che si trova dunque ad una decade più un terzo di decade
+prima di 20, \SI{+13.3}{\deci\bel} dovuti allo zero in 5, a due terzi di decade
+di distanza e \SI{-6.66}{\deci\bel} dovuti al polo in 10, un terzo di decade
+prima, sommando tutti i contributi si ottiene un guadagno in $\omega=20$ pari a
+circa \SI{32}{\deci\bel}, andavano recuperati circa \SI{50}{\deci\bel} vuol
+dire che c'è una differenza di ancora \SI{18}{\deci\bel}, possono essere
+recuperati con il parametro $K$, eseguendo la formula inversa del logaritmo
+$$
+    K = 10^{\frac{18}{20}} \simeq 8.16
+$$
